@@ -1,1 +1,4 @@
-# com.kingofapp.polylizer
+# Polylizer
+
+npm install -g polymer-cli
+polymer serve

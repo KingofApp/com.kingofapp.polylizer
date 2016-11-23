@@ -1,0 +1,149 @@
+{
+  "config": {
+    "index": "menu-abcd",
+    "theme": {
+      "identifier": "koapp-theme-android",
+      "path": "themes/koapp-theme-android/koapp-theme-android.html"
+    },
+    "spinner": {
+      "identifier": "koapp-spinner-android",
+      "path": "spinners/koapp-spinner-android/koapp-spinner-android.html"
+    },
+    "colors": {
+      "primaryTextColor": "#212121",
+      "primaryBackgroundColor": "#ffffff",
+      "secondaryTextColor": "#737373",
+      "disabledTextColor": "#9b9b9b",
+      "dividerColor": "#dbdbdb",
+      "primaryColor": "#3f51b5",
+      "lightPrimaryColor": "#c5cae9",
+      "darkPrimaryColor": "#303f9f",
+      "accentColor": "#ff4081",
+      "lightAccentColor": "#ff80ab",
+      "darkAccentColor": "#f50057",
+      "backgroundColor": "#ffffff"
+    },
+    "images": {
+      "background": ""
+    },
+    "fonts": {
+      "primaryFontFamily": {
+        "name": "Roboto",
+        "url": "https://fonts.googleapis.com/css?family=Roboto"
+      },
+      "titleFontFamily": {
+        "name": "Roboto",
+        "url": "https://fonts.googleapis.com/css?family=Roboto"
+      }
+    },
+    "iconset": "icons",
+    "lang": [
+      "en_US"
+    ]
+  },
+  "modules": {
+    "/home-abcd": {
+      "name": "Home",
+      "identifier": "html",
+      "type": "P",
+      "icon": "home",
+      "showOn": {
+        "market": true,
+        "dragDrop": true
+      },
+      "view": "modules/html/module-html.html",
+      "scope": {
+        "value": "<p style='color:#39a9d3'>Welcome to my </p><p style='color:#d36339'>APP</p><a href='/map-abcd'>To map</a><a href='/menu-abcd'>To Menu</a>",
+        "display" : ""
+      }
+    },
+    "/another-abcd": {
+      "name": "Home",
+      "identifier": "html",
+      "type": "P",
+      "icon": "home",
+      "view": "modules/html/module-html.html",
+      "scope": {
+        "value": "<p style='color:#39a9d3'>TETAS </p><p style='color:#d36339'>Html module</p><a href='/map-abcd'>To map</a>",
+        "display" : ""
+      }
+    },
+    "/map-abcd": {
+      "name": "Google Maps",
+      "identifier": "googlemap",
+      "type": "P",
+      "icon": "room",
+      "view": "modules/googlemap/module-googlemap.html",
+      "libs": [{
+        "bower": {
+          "GoogleWebComponents/google-map": "^1.1.7"
+        },
+        "src": "bower_components/google-map/google-map.html"
+      }],
+      "scope": {
+        "lat": "39.8847281",
+        "lon": "4.2540999",
+        "api": "AIzaSyANxt-hXcUf8PB0Tw1eFIB9qgby2Cmi-7w",
+        "zoom": "15"
+      }
+    },
+    "/map-abc": {
+      "name": "Google Maps",
+      "identifier": "googlemap",
+      "type": "P",
+      "icon": "room",
+      "view": "modules/googlemap/module-googlemap.html",
+      "libs": [{
+        "bower": {
+          "GoogleWebComponents/google-map": "^1.1.7"
+        },
+        "src": "bower_components/google-map/google-map.html"
+      }],
+      "scope": {
+        "lat": "40.3891018",
+        "lon": "-3.6917287",
+        "api": "AIzaSyANxt-hXcUf8PB0Tw1eFIB9qgby2Cmi-7w",
+        "zoom": "15"
+      }
+    },
+    "/menu-abcd": {
+      "name": "Menu",
+      "identifier": "simplemenu",
+      "type": "P",
+      "icon": "room",
+      "view": "modules/simplemenu/module-simplemenu.html",
+      "scope": {
+        "menuItems": [
+          {
+            "path": "/home-abcd",
+            "name": "Elem1"
+          },
+          {
+            "path": "/menu-abcd/another-abcd",
+            "name": "Elem2"
+          }
+        ]
+      }
+    },
+    "/menu-abcd/another-abcd": {
+      "name": "Home",
+      "identifier": "html",
+      "type": "P",
+      "icon": "home",
+      "view": "modules/html/module-html.html",
+      "scope": {
+        "value": "<p style='color:#39a9d3'>TETAS </p><p style='color:#d36339'>Html module</p><a href='/map-abcd'>To map</a>",
+        "display" : ""
+      }
+    },
+    "/404": {
+      "name": "Not Found",
+      "identifier": "404",
+      "type": "P",
+      "icon": "",
+      "view": "module-404.html",
+      "scope": {
+      }
+    }
+  }
+}
