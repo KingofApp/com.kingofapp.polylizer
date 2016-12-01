@@ -27,7 +27,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
     </div>
     <!-- Loading contained modules -->
-    <core-loader subroute="{{subroute}}"> </core-loader>
+
+    <template is="dom-if" if="{{visible}}">
+    <core-loader route="[[route]]" config="[[config]]"> </core-loader>
+    </template>
   </template>
 
   <script>
@@ -36,16 +39,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
         scope: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_scopeReceived'
+          type: String
+        },
+        route: {
+          type: String
+        },
+        path: {
+          type: String
+        },
+        config: {
+          type: String
+        },
+        visible: {
+          type: Boolean,
+          value: true
         }
       },
 
-      _scopeReceived: function(content) {
-        content = JSON.parse(content);
-        console.log("[P] Content received ", content);
-        this.menuItems = content.menuItems;
+      observers: [
+        '_dataReceived(scope,route,path,config)'
+      ],
+
+      _dataReceived: function(scope,route,path,config) {
+        route = JSON.parse(route);
+        scope = JSON.parse(scope);
+        // console.log("[P] Content received ", this.route);
+        // console.log("[P] Content received ", config);
+        this.menuItems = scope.menuItems;
+
+        console.log("Path es",path);
+        console.log("Route path",route.path);
+        // if(route.path != path){
+          // this.visible = true;
+
+        // }
+
 
       }
 

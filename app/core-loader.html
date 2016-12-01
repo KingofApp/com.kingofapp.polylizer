@@ -20,8 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div id="content">
-      Test
+    <div id="container">
     </div>
   </template>
 
@@ -30,17 +29,66 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'core-loader',
 
       properties: {
-        subroute: {
-          type: String,
-          observer: '_subrouteReceived'
+        route: {
+          type: String
+        },
+        config: {
+          type: String
         }
       },
 
-      _subrouteReceived: function(subroute) {
-        subroute = JSON.parse(subroute);
-        console.log("[Core Loader] Subroute received ", subroute);
-        //Dynamic loading components if subroute
+      observers: [
+        '_dataReceived(route,config)'
+      ],
 
+      _dataReceived: function(route,config) {
+        route = JSON.parse(route);
+        config = JSON.parse(config);
+        var module = {"view": "module-splash.html", "identifier": "splash"};
+        var scope = "";
+        //Remove selected classes "selected"
+        var items = this.shadowRoot.querySelectorAll('.selected');
+        for (var i = 0; i < items.length; i++) {
+            items[i].classList.remove("selected");
+        }
+        if (config.modules[route.path] && config.modules[route.path].identifier) {
+          this._createElement(config.modules[route.path]);
+        }
+
+
+      },
+
+      _createElement: function(module) {
+
+        var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
+        var scope = JSON.stringify(module.scope);
+        var config = this.get('config');
+
+
+        var route = JSON.stringify(this.route);
+        if (this.shadowRoot.querySelector("module-" + module.identifier)) {
+          dynamicEl.setAttribute("class", "selected");
+          dynamicEl.setAttribute("scope", scope);
+          dynamicEl.setAttribute("config", config);
+          dynamicEl.setAttribute("route", route);
+        }else {
+          dynamicEl = document.createElement("module-" + module.identifier);
+          dynamicEl.setAttribute("class", "selected");
+          dynamicEl.setAttribute("scope", scope);
+          dynamicEl.setAttribute("config", config);
+          dynamicEl.setAttribute("route", route);
+          Polymer.dom(this.$.container).appendChild(dynamicEl);
+        }
+
+        this._importElement(module);
+
+      },
+
+
+      _importElement: function(module) {
+        // Import dynamic module
+        var resolvedPageUrl = this.resolveUrl(module.view);
+        this.importHref(resolvedPageUrl, null, null, true);
       }
 
     });

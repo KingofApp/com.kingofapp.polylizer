@@ -114,16 +114,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
         var scope = JSON.stringify(module.scope);
-        var subroute = JSON.stringify(this.subroute);
+        var config = "";
+        if(this.get('config')){
+          config = JSON.stringify(this.get('config'));
+        }
+
+
+        var route = JSON.stringify(this.route);
+        var path = this.route.path;
         if (this.shadowRoot.querySelector("module-" + module.identifier)) {
           dynamicEl.setAttribute("class", "selected");
           dynamicEl.setAttribute("scope", scope);
-          dynamicEl.setAttribute("subroute", subroute);
+          dynamicEl.setAttribute("config", config);
+          dynamicEl.setAttribute("route", route);
+          dynamicEl.setAttribute("path", path);
         }else {
           dynamicEl = document.createElement("module-" + module.identifier);
           dynamicEl.setAttribute("class", "selected");
           dynamicEl.setAttribute("scope", scope);
-          dynamicEl.setAttribute("subroute", subroute);
+          dynamicEl.setAttribute("config", config);
+          dynamicEl.setAttribute("route", route);
+          dynamicEl.setAttribute("path", path);
           Polymer.dom(this.$.main_container).appendChild(dynamicEl);
         }
 
