@@ -1,65 +1,46 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="core-loader.html">
+<link rel="import" href="shared-styles.html">
 
 <dom-module id="my-app">
   <template>
     <style>
-      :host {
+       :host {
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
-
         display: block;
       }
-      #main_container *:not(.selected){
-        display:none;
-      }
     </style>
-    <iron-ajax
-            auto
-            url="/data/structure.json"
-            handle-as="json"
-            last-response="{{jsondata}}"></iron-ajax>
-    <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
 
-        <div id="main_container">
-          <module-404></module-404>
-        </div>
+    <!-- Read structure.json -->
+    <iron-ajax auto url="/data/structure.json" handle-as="json" last-response="{{jsondata}}"></iron-ajax>
+
+    <!-- Router to detect page changes -->
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+
+    <!-- Initial module load -->
+    <core-loader config="[[config]]" path=[[path]]> </core-loader>
 
   </template>
 
   <script>
     Polymer({
+
       is: 'my-app',
 
       properties: {
         page: {
           type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
+          reflectToAttribute: true
         },
         jsondata: {
           type: Object,
           observer: '_configReceived'
         }
-
       },
 
       observers: [
@@ -67,96 +48,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        // Load page views on demand. Show splash if config not ready
-        if (this.get('config')) {
-          this.page = page;
-        }else {
-          //Saves currentPage while config is loaded
-          this.currentPage = page;
-          this.page = 'splash';
-        }
-
-
+        // Alter path object on `routeData.page` change
+        this.path = {
+          "path": this.route.path,
+          "prefix": '',
+        };
       },
+
       _configReceived: function(response) {
+        // Structure.json object received
         this.config = response;
-        console.log("[P] Config loaded into config var", response);
-        this._changeRoute();
+        this._loadIndex();
       },
 
-      _changeRoute: function() {
-        if (this.currentPage) {
-          //Loads page based on current index
-          this._delayPageLoad(this.currentPage, 0);
-        }else{
-          // Loads Index
-          this._delayPageLoad(this.get('config').config.index, 2000);
+      _loadIndex: function() {
+        // Load index every time a structure.json object is loaded
+        if (this.route.path == "/") {
+          this._delayPageLoad(this.config.config.index, 0);
         }
-
-
       },
 
-      _delayPageLoad: function (page, timeout) {
+      _delayPageLoad: function(page, timeout) {
+        // Page load function with timeout
         var _this = this;
-        setTimeout(function () {
-          _this.page = page;
+        setTimeout(function() {
+          _this.route.path = page;
+          _this._routePageChanged(page);
         }, timeout);
-      },
-
-
-      _importElement: function(module) {
-        // Import dynamic module
-        var resolvedPageUrl = this.resolveUrl(module.view);
-        this.importHref(resolvedPageUrl, null, this._showPage404, true);
-      },
-
-      _createElement: function(module) {
-
-        var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
-        var scope = JSON.stringify(module.scope);
-        var subroute = JSON.stringify(this.subroute);
-        if (this.shadowRoot.querySelector("module-" + module.identifier)) {
-          dynamicEl.setAttribute("class", "selected");
-          dynamicEl.setAttribute("scope", scope);
-          dynamicEl.setAttribute("subroute", subroute);
-        }else {
-          dynamicEl = document.createElement("module-" + module.identifier);
-          dynamicEl.setAttribute("class", "selected");
-          dynamicEl.setAttribute("scope", scope);
-          dynamicEl.setAttribute("subroute", subroute);
-          Polymer.dom(this.$.main_container).appendChild(dynamicEl);
-        }
-
-        this._importElement(module);
-
-      },
-
-      _pageChanged: function(page) {
-
-        var module = {"view": "module-splash.html", "identifier": "splash"};
-        var scope = "";
-        if (this.get('config') && this.get('config').modules['/'+page]) {
-          module = this.get('config').modules['/'+page];
-        }
-
-        //Remove selected classes "selected"
-        var items = this.shadowRoot.querySelectorAll('.selected');
-        for (var i = 0; i < items.length; i++) {
-            items[i].classList.remove("selected");
-        }
-
-        // Check if element exists, if it does just replace the config
-        if(module && module.view && module.identifier){
-          this._createElement(module);
-        }else {
-          this._showPage404();
-        }
-
-      },
-
-      _showPage404: function() {
-        this.page = '404';
       }
+      
     });
   </script>
 </dom-module>

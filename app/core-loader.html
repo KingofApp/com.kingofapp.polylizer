@@ -1,48 +1,101 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="core-loader">
-  <template>
-    <style include="shared-styles">
-      :host {
-        display: block;
 
+  <template>
+
+    <style include="shared-styles">
+       :host {
+        display: block;
         padding: 10px;
       }
     </style>
 
-    <div id="content">
-      Test
+    <div id="container">
     </div>
+
   </template>
 
   <script>
     Polymer({
+
       is: 'core-loader',
 
       properties: {
-        subroute: {
+        config: {
+          type: String
+        },
+        path: {
           type: String,
-          observer: '_subrouteReceived'
+          reflectToAttribute: true
         }
       },
 
-      _subrouteReceived: function(subroute) {
-        subroute = JSON.parse(subroute);
-        console.log("[Core Loader] Subroute received ", subroute);
-        //Dynamic loading components if subroute
+      observers: [
+        '_dataReceived(config,path)'
+      ],
 
+      _dataReceived: function(config, path) {
+        // Convert config and path objects into JSON if needed
+        try {
+          this.config = JSON.parse(config);
+          this.path = JSON.parse(path);
+        } catch (e) { }
+
+        // Prevent undefined / empty path
+        if(this.path.path && this.path.path != ''){
+          //Remove selected classes "selected"
+          var items = this.shadowRoot.querySelectorAll('.selected');
+          for (var i = 0; i < items.length; i++) {
+            items[i].classList.remove("selected");
+            items[i].classList.add("hidden");
+          }
+          
+          // Path reduction to create container paths
+          var first = '/' + this.path.path.split("/")[1];
+          this.path.path = this.path.path.replace(first,'');
+          this.path.prefix += first;
+
+          // Only for elements found in the structure service
+          if (this.config.modules[this.path.prefix] && this.config.modules[this.path.prefix].identifier) {
+            console.log("[core-loader] Creating element.. " + this.config.modules[this.path.prefix].identifier);
+            this._createElement(this.config.modules[this.path.prefix]);
+          }
+        }
+      },
+
+      _createElement: function(module) {
+        var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
+        var scope = JSON.stringify(module.scope);
+        var config = JSON.stringify(this.get('config'));
+        var path = JSON.stringify(this.path);
+
+        if (!this.shadowRoot.querySelector("module-" + module.identifier)) {
+          // If module not found create a new element
+          dynamicEl = document.createElement("module-" + module.identifier);
+        }
+
+        // Create attributes
+        dynamicEl.setAttribute("class", "selected");
+        dynamicEl.setAttribute("scope", scope);
+        dynamicEl.setAttribute("config", config);
+        dynamicEl.setAttribute("path", path);
+
+        if (!this.shadowRoot.querySelector("module-" + module.identifier)) {
+          // If module not found has to be appended
+          Polymer.dom(this.$.container).appendChild(dynamicEl);
+        }
+
+        this._importElement(module);
+      },
+
+      _importElement: function(module) {
+        // Import dynamic htmls
+        var resolvedPageUrl = this.resolveUrl(module.view);
+        this.importHref(resolvedPageUrl, null, null, true);
       }
 
     });
   </script>
+
 </dom-module>

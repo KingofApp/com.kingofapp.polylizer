@@ -1,7 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../core-loader.html">
 
-<dom-module id="module-simplemenu">
+<dom-module id="module-vimeocontainer">
 
   <template>
 
@@ -13,13 +13,7 @@
     </style>
 
     <div class="card">
-      <!-- Populate menu -->
-      <template is="dom-repeat" items="{{menuItems}}">
-
-          <a href$="{{item.path}}"><span>{{item.name}}</span></a>
-
-      </template>
-
+      <iframe src="[[vimeoUrl]]" width="100%"> </iframe>
     </div>
 
     <!-- Loading contained modules -->
@@ -30,16 +24,10 @@
   <script>
     Polymer({
 
-      is: 'module-simplemenu',
+      is: 'module-vimeocontainer',
 
       properties: {
         scope: {
-          type: Object
-        },
-        path: {
-          type: Object
-        },
-        config: {
           type: Object
         }
       },
@@ -49,7 +37,7 @@
       ],
 
       _dataReceived: function(scope,path,config) {
-        this.menuItems = this.scope.menuItems;
+        this.vimeoUrl = 'http://player.vimeo.com/video/' + scope.vimeoId;
       }
 
     });
