@@ -1,6 +1,6 @@
 {
   "config": {
-    "index": "menu-abcd",
+    "index": "/home-abcd",
     "theme": {
       "identifier": "koapp-theme-android",
       "path": "themes/koapp-theme-android/koapp-theme-android.html"
@@ -53,22 +53,32 @@
       },
       "view": "modules/html/module-html.html",
       "scope": {
-        "value": "<p style='color:#39a9d3'>Welcome to my </p><p style='color:#d36339'>APP</p><a href='/map-abcd'>To map</a><a href='/menu-abcd'>To Menu</a>",
+        "value": "<p style='color:#39a9d3'>Welcome to my </p><p style='color:#d36339'>APP</p><a href='/menu-abcd'>To Menu</a>",
         "display" : ""
       }
     },
-    "/another-abcd": {
+    "/menu-abcd/vimeo-abcd": {
+      "name": "Vimeo",
+      "identifier": "vimeocontainer",
+      "type": "P",
+      "icon": "room",
+      "view": "modules/vimeocontainer/module-vimeocontainer.html",
+      "scope": {
+        "vimeoId": "22439234"
+      }
+    },
+    "/menu-abcd/vimeo-abcd/another-abcz": {
       "name": "Home",
       "identifier": "html",
       "type": "P",
       "icon": "home",
       "view": "modules/html/module-html.html",
       "scope": {
-        "value": "<p style='color:#39a9d3'>TETAS </p><p style='color:#d36339'>Html module</p><a href='/map-abcd'>To map</a>",
+        "value": "<p style='color:#39a9d3'>Mountain </p>",
         "display" : ""
       }
     },
-    "/map-abcd": {
+    "/menu-abcd/map-abcd": {
       "name": "Google Maps",
       "identifier": "googlemap",
       "type": "P",
@@ -87,8 +97,8 @@
         "zoom": "15"
       }
     },
-    "/map-abc": {
-      "name": "Google Maps",
+    "/menu-abcd/map-abc": {
+      "name": "Google Maps 1",
       "identifier": "googlemap",
       "type": "P",
       "icon": "room",
@@ -121,6 +131,18 @@
           {
             "path": "/menu-abcd/another-abcd",
             "name": "Elem2"
+          },
+          {
+            "path": "/menu-abcd/map-abc",
+            "name": "Maps1"
+          },
+          {
+            "path": "/menu-abcd/map-abcd",
+            "name": "Maps2"
+          },
+          {
+            "path": "/menu-abcd/vimeo-abcd/another-abcz",
+            "name": "Vimeo COnt"
           }
         ]
       }
@@ -132,7 +154,7 @@
       "icon": "home",
       "view": "modules/html/module-html.html",
       "scope": {
-        "value": "<p style='color:#39a9d3'>TETAS </p><p style='color:#d36339'>Html module</p><a href='/map-abcd'>To map</a>",
+        "value": "<p style='color:#39a9d3'>Test </p><p style='color:#d36339'>Html module</p>",
         "display" : ""
       }
     },

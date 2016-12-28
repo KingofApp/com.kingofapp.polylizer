@@ -1,82 +1,58 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../core-loader.html">
 
 <dom-module id="module-simplemenu">
+
   <template>
+
     <style include="shared-styles">
       :host {
         display: block;
-
         padding: 10px;
       }
     </style>
 
     <div class="card">
+      <!-- Populate menu -->
       <template is="dom-repeat" items="{{menuItems}}">
-        <a href$="{{item.path}}"><span>{{item.name}}</span></a>
-    </template>
-    </div>
-    <!-- Loading contained modules -->
 
-    <template is="dom-if" if="{{visible}}">
-    <core-loader route="[[route]]" config="[[config]]"> </core-loader>
-    </template>
+          <a href$="{{item.path}}"><span>{{item.name}}</span></a>
+
+      </template>
+
+    </div>
+
+    <!-- Loading contained modules -->
+    <core-loader config="[[config]]" path="[[path]]"> </core-loader>
+
   </template>
 
   <script>
     Polymer({
+
       is: 'module-simplemenu',
 
       properties: {
         scope: {
-          type: String
-        },
-        route: {
-          type: String
+          type: Object
         },
         path: {
-          type: String
+          type: Object
         },
         config: {
-          type: String
-        },
-        visible: {
-          type: Boolean,
-          value: true
+          type: Object
         }
       },
 
       observers: [
-        '_dataReceived(scope,route,path,config)'
+        '_dataReceived(scope,path,config)'
       ],
 
-      _dataReceived: function(scope,route,path,config) {
-        route = JSON.parse(route);
-        scope = JSON.parse(scope);
-        // console.log("[P] Content received ", this.route);
-        // console.log("[P] Content received ", config);
-        this.menuItems = scope.menuItems;
-
-        console.log("Path es",path);
-        console.log("Route path",route.path);
-        // if(route.path != path){
-          // this.visible = true;
-
-        // }
-
-
+      _dataReceived: function(scope,path,config) {
+        this.menuItems = this.scope.menuItems;
       }
 
     });
   </script>
+
 </dom-module>
