@@ -1,0 +1,46 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../core-loader.html">
+
+<dom-module id="module-vimeocontainer">
+
+  <template>
+
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <iframe src="[[vimeoUrl]]" width="100%"> </iframe>
+    </div>
+
+    <!-- Loading contained modules -->
+    <core-loader config="[[config]]" path="[[path]]"> </core-loader>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'module-vimeocontainer',
+
+      properties: {
+        scope: {
+          type: Object
+        }
+      },
+
+      observers: [
+        '_dataReceived(scope,path,config)'
+      ],
+
+      _dataReceived: function(scope,path,config) {
+        this.vimeoUrl = 'http://player.vimeo.com/video/' + scope.vimeoId;
+      }
+
+    });
+  </script>
+
+</dom-module>
