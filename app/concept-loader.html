@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="core-loader">
+<dom-module id="concept-loader">
 
   <template>
 
@@ -19,7 +19,7 @@
   <script>
     Polymer({
 
-      is: 'core-loader',
+      is: 'concept-loader',
 
       properties: {
         config: {
@@ -30,10 +30,10 @@
           reflectToAttribute: true
         }
       },
-      // DISABLED for concept loader
-      // observers: [
-      //   '_dataReceived(config,path)'
-      // ],
+
+      observers: [
+        '_dataReceived(config,path)'
+      ],
 
       _dataReceived: function(config, path) {
         // Convert config and path objects into JSON if needed
@@ -52,15 +52,18 @@
           }
 
           // Path reduction to create container paths
-          var first = '/' + this.path.path.split("/")[1];
-          this.path.path = this.path.path.replace(first,'');
-          this.path.prefix += first;
-
-          // Only for elements found in the structure service
-          if (this.config.modules[this.path.prefix] && this.config.modules[this.path.prefix].identifier) {
-            console.log("[core-loader] Creating element.. " + this.config.modules[this.path.prefix].identifier);
-            this._createElement(this.config.modules[this.path.prefix]);
+          var routes = this.path.path.split("/");
+          var temp = '';
+          for (var i = 1; i < routes.length; i++) {
+            temp += '/' + routes[i];
+            // Only for elements found in the structure service
+            if (this.config.modules[temp] && this.config.modules[temp].identifier) {
+              console.log("[concept-loader] Creating element.. " + this.config.modules[temp].identifier);
+              this._createElement(this.config.modules[temp]);
+            }
           }
+
+
         }
       },
 
@@ -81,10 +84,8 @@
         dynamicEl.setAttribute("config", config);
         dynamicEl.setAttribute("path", path);
 
-        if (!this.shadowRoot.querySelector("module-" + module.identifier)) {
-          // If module not found has to be appended
-          Polymer.dom(this.$.container).appendChild(dynamicEl);
-        }
+        // This is used to reorder elements
+        Polymer.dom(this.$.container).appendChild(dynamicEl);
 
         this._importElement(module);
       },
