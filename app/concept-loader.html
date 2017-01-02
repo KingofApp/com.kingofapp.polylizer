@@ -65,7 +65,7 @@
       _createElement: function(module) {
         var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
         var scope = JSON.stringify(module.scope);
-        var config = JSON.stringify(this.get('config'));
+        var config = JSON.stringify(this.config);
         var path = JSON.stringify(this.path);
 
         if (!this.shadowRoot.querySelector("module-" + module.identifier)) {
