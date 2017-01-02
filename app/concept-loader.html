@@ -36,11 +36,6 @@
       ],
 
       _dataReceived: function(config, path) {
-        // Convert config and path objects into JSON if needed
-        try {
-          this.config = JSON.parse(config);
-          this.path = JSON.parse(path);
-        } catch (e) { }
 
         // Prevent undefined / empty path
         if(this.path.path && this.path.path != ''){
