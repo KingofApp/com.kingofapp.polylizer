@@ -57,32 +57,28 @@
               this._createElement(this.config.modules[temp]);
             }
           }
-
-
         }
       },
 
       _createElement: function(module) {
-        var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
-        var scope = JSON.stringify(module.scope);
-        var config = JSON.stringify(this.config);
-        var path = JSON.stringify(this.path);
-
-        if (!this.shadowRoot.querySelector("module-" + module.identifier)) {
-          // If module not found create a new element
-          dynamicEl = document.createElement("module-" + module.identifier);
-        }
+        var dynamicEl = this._getModuleElement(module);
 
         // Create attributes
         dynamicEl.setAttribute("class", "selected");
-        dynamicEl.setAttribute("scope", scope);
-        dynamicEl.setAttribute("config", config);
-        dynamicEl.setAttribute("path", path);
+        dynamicEl.setAttribute("scope",  JSON.stringify(module.scope));
+        dynamicEl.setAttribute("config", JSON.stringify(this.config));
+        dynamicEl.setAttribute("path",   JSON.stringify(this.path));
 
         // This is used to reorder elements
         Polymer.dom(this.$.container).appendChild(dynamicEl);
 
         this._importElement(module);
+      },
+
+      _getModuleElement: function(module){
+        var selector = "module-" + module.identifier;
+        return this.shadowRoot.querySelector(selector) ||
+               document.createElement(selector);
       },
 
       _importElement: function(module) {
