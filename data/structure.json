@@ -116,6 +116,18 @@
         "zoom": "15"
       }
     },
+    "/menu-abcd/contact-abc": {
+      "name": "Contact",
+      "identifier": "contact",
+      "type": "P",
+      "icon": "room",
+      "view": "modules/contact/module-contact.html",
+      "scope": {
+        "apiKey": "R2sp5gSkA3UDaKZw",
+        "to": "paco@kingofapp.es",
+        "toName": "Paco <3"
+      }
+    },
     "/menu-abcd": {
       "name": "Menu",
       "identifier": "simplemenu",
@@ -143,6 +155,10 @@
           {
             "path": "/menu-abcd/vimeo-abcd/another-abcz",
             "name": "Vimeo COnt"
+          },
+          {
+            "path": "/menu-abcd/contact-abc",
+            "name": "Contact"
           }
         ]
       }

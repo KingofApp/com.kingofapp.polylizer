@@ -1,0 +1,74 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+
+
+<dom-module id="module-contact">
+
+  <template>
+
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+      <div class="card">
+        <paper-input label="Email" value="{{from}}" required></paper-input>
+        <paper-input label="Name" value="{{fromName}}" required></paper-input>
+        <paper-input label="Subject" value="{{emailSubject}}"></paper-input>
+        <paper-textarea id="emailContent" label="Write your message here!" value="{{emailContent}}" required></paper-textarea>
+        <paper-button on-tap="_sendEmail" raised toggle>Send</paper-button>
+      </div>
+      <iron-ajax id="launchAjax" url="https://api.sendinblue.com/v2.0/email" headers$="{{header}}" body$="{{body}}" method="POST" contentType="application/json"></iron-ajax>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'module-contact',
+
+      properties: {
+        scope: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_scopeReceived'
+        }
+      },
+
+      _scopeReceived: function(content) {
+        content = JSON.parse(content);
+        var apiKey = {'api-key': content.apiKey};
+        this.set('contact', content.to);
+        this.set('contactName', content.toName);
+        this.set('header', apiKey);
+      },
+
+      _sendEmail: function () {
+        var to = {};
+        var from = [];
+        to[this.contact] = this.contactName;
+        from.push(this.from);
+        from.push(this.fromName);
+        var bodySent = {'to' : to, 'from': from, 'subject': this.emailSubject, 'html': this.emailContent};
+        this.$.launchAjax.headers = JSON.stringify(this.header);
+        this.$.launchAjax.body    = JSON.stringify(bodySent);
+        console.log(this.$.launchAjax.headers);
+        this.$.launchAjax.generateRequest();
+      }
+
+    });
+  </script>
+</dom-module>
+
+
+<!-- curl -H 'api-key:R2sp5gSkA3UDaKZw' \
+-X POST -d '{ \
+"to":"paco@kingofapp.es", \
+"from":"ulises@kingofapp.es", \
+"subject":"test", \
+"text":"this is a test", \
+}'  -->
