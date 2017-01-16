@@ -30,21 +30,12 @@
 
       properties: {
         scope: {
-          type: Object
-        },
-        path: {
-          type: Object
-        },
-        config: {
-          type: Object
+          type: Object,
+          observer: '_scopeReceived'
         }
       },
 
-      observers: [
-        '_dataReceived(scope,path,config)'
-      ],
-
-      _dataReceived: function(scope,path,config) {
+      _scopeReceived: function(scope) {
         this.menuItems = this.scope.menuItems;
       }
 

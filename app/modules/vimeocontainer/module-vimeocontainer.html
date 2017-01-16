@@ -24,15 +24,12 @@
 
       properties: {
         scope: {
-          type: Object
+          type: Object,
+          observer: '_scopeReceived'
         }
       },
 
-      observers: [
-        '_dataReceived(scope,path,config)'
-      ],
-
-      _dataReceived: function(scope,path,config) {
+      _scopeReceived: function(scope) {
         this.vimeoUrl = 'http://player.vimeo.com/video/' + scope.vimeoId;
       }
 
