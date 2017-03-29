@@ -63,7 +63,7 @@
                 "src": "bower_components/iron-signals/iron-signals.html"
             }],
             "scope": {
-                "trackId": ""
+                "code": "UA-XXXXX-Y"
             },
             "path": "googleanalytics"
         }

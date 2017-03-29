@@ -1,7 +1,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/iron-signals/iron-signals.html">
 
-<dom-module id="google-analytics">
+<dom-module id="service-googleanalytics">
     <template>
         <iron-signals on-iron-signal-track-page="trackPage" on-iron-signal-track-event="trackEvent"></iron-signals>
     </template>
@@ -20,14 +20,11 @@
     })(window, document, 'script', 'scripts/analytics.js', 'ga');
     (function() {
         Polymer({
-            is: 'google-analytics',
+            is: 'service-googleanalytics',
             properties: {
-                code: {
-                    type: String
-                },
-                userId: {
+                scope: {
                     type: String,
-                    notify: true
+                    observer: '_scopeReceived'
                 }
             },
             listeners: {
@@ -35,14 +32,22 @@
                 'track-page': 'trackPage',
                 'user-id-changed': 'userIDChanged'
             },
-            ready: function() {
+            _scopeReceived: function(scope) {
+                scope = JSON.parse(scope);
+                this.set('code', scope.code);
+                if (scope.userId)
+                    this.set(userId, scope.userId)
                 ga('create', this.code, 'auto');
                 this.trackPage();
             },
+
             trackEvent: function(e) {
+                //Add support for a non-interactin even that does not effect bounce rates - eg things that happen after a timeout
+                //ga('send', 'event', 'category', 'action', {'nonInteraction': 1});
                 ga('send', 'event', e.detail.category, e.detail.action, e.detail.label, e.detail.value);
             },
             trackPage: function(e) {
+                //Use set param, this way if we then send a subsequent event on the page it will be correctly associated with the same page
                 if (e != undefined && e.detail.path !== undefined) {
                     ga('set', 'page', e.detail.path);
                 }
@@ -51,6 +56,14 @@
             userIDChanged: function(e) {
                 ga('set', '&uid', this.userId);
             }
-        });
+        })
     })();
 </script>
+<!--
+    Track a page Change
+    this.fire('iron-signal', {name: 'track-page', data: { path: "/about.html" } });
+    
+    
+    Track an event
+    this.fire('iron-signal', {name: 'track-event',data: {category: "messages",action: "send_text_message",label: "group",value: 1}});
+-->

@@ -1,7 +1,9 @@
 {
     "name": "polylizer",
     "authors": [
-        "King Of App"
+        "flafuente",
+        "joviwap",
+        "totegsito"
     ],
     "private": true,
     "dependencies": {

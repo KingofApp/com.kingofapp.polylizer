@@ -1,0 +1,61 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="service-loader">
+
+    <template>
+
+    <style include="shared-styles">
+       :host {
+        display: none;
+        padding: 10px;
+      }
+    </style>
+    <div id="container"></div>
+
+  </template>
+
+    <script>
+        Polymer({
+            is: 'service-loader',
+            properties: {
+                config: {
+                    type: String
+                }
+            },
+
+            observers: [
+                '_dataReceived(config)'
+            ],
+
+            _dataReceived: function(config) {
+                // Path reduction to create container paths
+                var services = this.config.services;
+                for (var service in services) {
+                    if (services[service] && services[service].identifier) {
+                        console.log("[service-loader] Creating service.. " + services[service].identifier);
+                        this._createService(services[service]);
+                    }
+                }
+            },
+
+            _createService: function(service) {
+                var dynamicEl = this.shadowRoot.querySelector("service-" + service.identifier);
+                var scope = JSON.stringify(service.scope);
+
+                if (!this.shadowRoot.querySelector("service-" + service.identifier)) {
+                    // If service not found create a new element
+                    dynamicEl = document.createElement("service-" + service.identifier);
+                }
+                // Create attributes
+                dynamicEl.setAttribute("scope", scope);
+
+                // This is used to reorder elements
+                Polymer.dom(this.$.container).appendChild(dynamicEl);
+
+                // this._importElement(service);
+            }
+
+        });
+    </script>
+
+</dom-module>

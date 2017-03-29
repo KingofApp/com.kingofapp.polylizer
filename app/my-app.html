@@ -3,10 +3,11 @@
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="concept-loader.html">
+<link rel="import" href="service-loader.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-app">
-  <template>
+    <template>
     <style>
        :host {
         --app-primary-color: #4285f4;
@@ -24,59 +25,65 @@
 
     <!-- Initial module load -->
     <concept-loader config="[[config]]" path=[[path]]> </concept-loader>
+    <!-- Initial service load -->
+    <service-loader config="[[config]]"> </service-loader>
 
   </template>
+    <script>
+        Polymer({
 
-  <script>
-    Polymer({
+            is: 'my-app',
 
-      is: 'my-app',
+            properties: {
+                page: {
+                    type: String,
+                    reflectToAttribute: true
+                },
+                jsondata: {
+                    type: Object,
+                    observer: '_configReceived'
+                }
+            },
 
-      properties: {
-        page: {
-          type: String,
-          reflectToAttribute: true
-        },
-        jsondata: {
-          type: Object,
-          observer: '_configReceived'
-        }
-      },
+            observers: [
+                '_routePageChanged(routeData.page)'
+            ],
 
-      observers: [
-        '_routePageChanged(routeData.page)'
-      ],
+            _routePageChanged: function(page) {
+                // Alter path object on `routeData.page` change
+                this.path = {
+                    "path": this.route.path,
+                    "prefix": '',
+                };
+            },
 
-      _routePageChanged: function(page) {
-        // Alter path object on `routeData.page` change
-        this.path = {
-          "path": this.route.path,
-          "prefix": '',
-        };
-      },
+            _configReceived: function(response) {
+                // Structure.json object received
+                this.config = response;
+                this._loadIndex();
+                this._createServices(response);
+            },
 
-      _configReceived: function(response) {
-        // Structure.json object received
-        this.config = response;
-        this._loadIndex();
-      },
+            _createServices: function(config) {
+                console.log(config);
+            },
 
-      _loadIndex: function() {
-        // Load index every time a structure.json object is loaded
-        if (this.route.path == "/") {
-          this._delayPageLoad(this.config.config.index, 0);
-        }
-      },
+            _loadIndex: function() {
+                // Load index every time a structure.json object is loaded
+                if (this.route.path == "/") {
+                    this._delayPageLoad(this.config.config.index, 0);
+                }
+            },
 
-      _delayPageLoad: function(page, timeout) {
-        // Page load function with timeout
-        var _this = this;
-        setTimeout(function() {
-          _this.route.path = page;
-          _this._routePageChanged(page);
-        }, timeout);
-      }
+            _delayPageLoad: function(page, timeout) {
+                // Page load function with timeout
+                var _this = this;
+                setTimeout(function() {
+                    _this.route.path = page;
+                    _this._routePageChanged(page);
+                }, timeout);
+            }
 
-    });
-  </script>
+        });
+    </script>
 </dom-module>

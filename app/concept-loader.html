@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 
 <dom-module id="concept-loader">
 
@@ -36,9 +36,8 @@
             ],
 
             _dataReceived: function(config, path) {
-
                 // Prevent undefined / empty path
-                if (this.path.path && this.path.path != '') {
+                if (this.path.path && this.path.path !== '') {
                     //Remove selected classes "selected"
                     var items = this.shadowRoot.querySelectorAll('.selected');
                     for (var i = 0; i < items.length; i++) {
@@ -58,8 +57,6 @@
                             this._createModule(this.config.modules[temp]);
                         }
                     }
-
-
                 }
             },
 
