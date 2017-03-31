@@ -2,7 +2,7 @@
 
 <dom-module id="module-html">
 
-  <template>
+    <template>
 
     <style include="shared-styles">
       :host {
@@ -17,22 +17,22 @@
 
   </template>
 
-  <script>
-    Polymer({
-      is: 'module-html',
+    <script>
+        Polymer({
+            is: 'module-html',
 
-      properties: {
-        scope: {
-          type: String,
-          observer: '_scopeReceived'
-        }
-      },
+            properties: {
+                scope: {
+                    type: String,
+                    observer: '_scopeReceived'
+                }
+            },
 
-      _scopeReceived: function(content) {
-        content = JSON.parse(content);
-        Polymer.dom(this.$.html_content).innerHTML= content.value;
-      }
+            _scopeReceived: function(content) {
+                content = JSON.parse(content);
+                Polymer.dom(this.$.html_content).innerHTML = content.value;
+            }
 
-    });
-  </script>
+        });
+    </script>
 </dom-module>

@@ -1,19 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
 <dom-module id="service-loader">
-
     <template>
-
-    <style include="shared-styles">
-       :host {
-        display: none;
-        padding: 10px;
-      }
-    </style>
-    <div id="container"></div>
-
+    <div id="serviceContainer"></div>
   </template>
-
     <script>
         Polymer({
             is: 'service-loader',
@@ -22,11 +11,9 @@
                     type: String
                 }
             },
-
             observers: [
                 '_dataReceived(config)'
             ],
-
             _dataReceived: function(config) {
                 // Path reduction to create container paths
                 var services = this.config.services;
@@ -37,7 +24,6 @@
                     }
                 }
             },
-
             _createService: function(service) {
                 var dynamicEl = this.shadowRoot.querySelector("service-" + service.identifier);
                 var scope = JSON.stringify(service.scope);
@@ -45,17 +31,19 @@
                 if (!this.shadowRoot.querySelector("service-" + service.identifier)) {
                     // If service not found create a new element
                     dynamicEl = document.createElement("service-" + service.identifier);
+                    // Create attributes
+                    dynamicEl.setAttribute("scope", scope);
+                    // This is used to reorder elements
+                    Polymer.dom(this.$.serviceContainer).appendChild(dynamicEl);
+                    this._importElement(service);
+
                 }
-                // Create attributes
-                dynamicEl.setAttribute("scope", scope);
-
-                // This is used to reorder elements
-                Polymer.dom(this.$.container).appendChild(dynamicEl);
-
-                // this._importElement(service);
+            },
+            _importElement: function(service) {
+                // Import dynamic htmls
+                var resolvedPageUrl = this.resolveUrl(service.view);
+                this.importHref(resolvedPageUrl, null, null, true);
             }
-
         });
     </script>
-
 </dom-module>

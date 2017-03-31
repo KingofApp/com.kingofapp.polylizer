@@ -50,6 +50,7 @@
             "showOn": {
                 "market": true
             },
+            "view": "services/googleanalytics/service-googleanalytics.html",
             "requires": [],
             "deps": ["cordova-plugin-google-analytics"],
             "vendor": {
@@ -63,7 +64,7 @@
                 "src": "bower_components/iron-signals/iron-signals.html"
             }],
             "scope": {
-                "code": "UA-XXXXX-Y"
+                "code": "UA-59289471-2"
             },
             "path": "googleanalytics"
         }

@@ -1,26 +1,18 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
 <dom-module id="concept-loader">
-
     <template>
-
     <style include="shared-styles">
        :host {
         display: block;
         padding: 10px;
       }
     </style>
-
     <div id="container">
     </div>
-
   </template>
-
     <script>
         Polymer({
-
             is: 'concept-loader',
-
             properties: {
                 config: {
                     type: String
@@ -30,11 +22,9 @@
                     reflectToAttribute: true
                 }
             },
-
             observers: [
                 '_dataReceived(config,path)'
             ],
-
             _dataReceived: function(config, path) {
                 // Prevent undefined / empty path
                 if (this.path.path && this.path.path !== '') {
@@ -44,10 +34,8 @@
                         items[i].classList.remove("selected");
                         items[i].classList.add("hidden");
                     }
-
                     // Path reduction to create container paths
                     var routes = this.path.path.split("/");
-                    console.log(routes);
                     var temp = '';
                     for (var i = 1; i < routes.length; i++) {
                         temp += '/' + routes[i];
@@ -59,7 +47,6 @@
                     }
                 }
             },
-
             _createModule: function(module) {
                 var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
                 var scope = JSON.stringify(module.scope);
@@ -78,13 +65,11 @@
 
                 this._importElement(module);
             },
-
             _importElement: function(module) {
                 // Import dynamic htmls
                 var resolvedPageUrl = this.resolveUrl(module.view);
                 this.importHref(resolvedPageUrl, null, null, true);
             }
-
         });
     </script>
 
