@@ -9,7 +9,12 @@
     "app-route": "PolymerElements/app-route#^0.9.0",
     "polymer": "Polymer/polymer#^1.6.0",
     "google-map": "GoogleWebComponents/google-map#^1.1.14",
-    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
+    "paper-drawer-panel": "^1.0.11",
+    "paper-header-panel": "^1.1.7",
+    "paper-toolbar": "^1.1.7",
+    "paper-icon-button": "^1.1.4",
+    "paper-item": "^1.2.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

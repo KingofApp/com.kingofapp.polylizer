@@ -3,15 +3,18 @@
 
 <dom-module id="module-googlemap">
 
-  <template>
+    <template>
 
     <style include="shared-styles">
       :host {
         display: block;
         padding: 10px;
       }
+
       google-map {
-        height: 600px;
+        display: block;
+        width: 100%;
+        min-height: 600px;
       }
     </style>
 
@@ -25,27 +28,27 @@
 
       </template>
 
-  </template>
+    </template>
 
-  <script>
-    Polymer({
-      is: 'module-googlemap',
+    <script>
+        Polymer({
+            is: 'module-googlemap',
 
-      properties: {
-        scope: {
-          type: String,
-          observer: '_scopeReceived'
-        }
-      },
+            properties: {
+                scope: {
+                    type: String,
+                    observer: '_scopeReceived'
+                }
+            },
 
-      _scopeReceived: function(content) {
-        content = JSON.parse(content);
-        this.set('api', content.api);
-        this.set('longitude', content.lon);
-        this.set('latitude', content.lat);
+            _scopeReceived: function(content) {
+                content = JSON.parse(content);
+                this.set('api', content.api);
+                this.set('longitude', content.lon);
+                this.set('latitude', content.lat);
 
-      }
+            }
 
-    });
-  </script>
+        });
+    </script>
 </dom-module>
