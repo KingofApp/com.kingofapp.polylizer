@@ -15,23 +15,30 @@ var t              = "async_",
     var iv = false;
     Object.keys(modules).forEach(function(module) {
       var deep = module.split('/');
-      for(var i in deep){
-        if(('/' + deep[i]) === view)  return iv = true;
-      }
+      for(var i in deep)  if(('/' + deep[i]) === view)  return iv = true;      
     });
     return iv;
   }
 
   function getModulesInView(modules, view) {
     var viewModules = [];
+    var addedMenu = false;
     if(modules[view]) {
       viewModules.push(modules[view]);
     } else if(isView(modules,view)){
       Object.keys(modules).forEach(function(module) {
-         if((module.indexOf(view) > -1) && modules[module]) viewModules.push(modules[module]);
+         if(module.indexOf(view) > -1) {
+           //get view menu
+           if(!addedMenu) {
+             var menu = module.split('/')[1];
+             if(modules['/' + menu]) viewModules.push(modules['/' + menu]);
+             addedMenu = !addedMenu;
+           }
+           if(modules[module]) viewModules.push(modules[module]);
+         }
        });
-    } else viewModules.push(modules['/404']);
 
+    } else viewModules.push(modules['/404']);
     return viewModules;
   }
 

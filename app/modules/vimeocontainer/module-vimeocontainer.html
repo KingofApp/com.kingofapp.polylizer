@@ -23,14 +23,14 @@
       is: 'module-vimeocontainer',
 
       properties: {
-        videoId: {
+        vimeoId: {
           type: Object,
           observer: '_scopeReceived'
         }
       },
 
-      _scopeReceived: function(videoId) {
-        this.vimeoUrl = 'http://player.vimeo.com/video/' + videoId;
+      _scopeReceived: function(vimeoId) {
+        this.vimeoUrl = 'http://player.vimeo.com/video/' + vimeoId;
       }
 
     });
