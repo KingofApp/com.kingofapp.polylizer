@@ -10,6 +10,7 @@
          :host {
             display: block;
             padding: 10px;
+            height: 60px;
         }
 
         .paper-item-link {
@@ -29,14 +30,14 @@
                             </paper-item>
                         </a>
                     </template>
-    </div>
-    </paper-header-panel>
-    <paper-header-panel main>
+                </div>
+            </paper-header-panel>
+        <paper-header-panel main>
         <paper-toolbar id="headerDrawer">
-            <paper-icon-button icon="menu" style="color: white;" paper-drawer-toggle></paper-icon-button>
-            <div class="flex" id="menuTitle"></div>
+            <!-- <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button> -->
+            <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+            <div id="menuTitle"></div>
         </paper-toolbar>
-
     </paper-header-panel>
     </paper-drawer-panel>
 
@@ -48,15 +49,21 @@
             is: 'module-drawermenu',
 
             properties: {
-                scope: {
+                menuItems: {
                     type: Object,
-                    observer: '_scopeReceived'
+                    observer: '_menuItems'
+                },
+                title: {
+                    type: String,
+                    observer: '_title'
                 }
             },
 
-            _scopeReceived: function(scope) {
-                this.menuItems = this.scope.menuItems;
-                Polymer.dom(this.$.menuTitle).innerHTML = this.scope.title;
+            _menuItems: function(menuItems) {
+                this.menuItems = menuItems;
+            },
+            _title: function(title) {
+                Polymer.dom(this.$.menuTitle).innerHTML = title;
             }
         });
     </script>
