@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="concept-loader.html">
+<link rel="import" href="async-loader.html">
 <link rel="import" href="service-loader.html">
 <link rel="import" href="shared-styles.html">
 
@@ -23,8 +24,15 @@
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
-    <!-- Initial module load -->
-    <concept-loader config="[[config]]" path=[[path]]> </concept-loader>
+    <!-- Initial module load
+    <concept-loader config="[[config]]" path=[[path]]> </concept-loader> -->
+
+    <async-loader
+      config$   ="[[asyncConfig]]"
+      modules$  ="[[asyncModules]]"
+      services$ ="[[asyncServices]]"
+      path$=[[path]]
+      > </async-loader>    
     <!-- Initial service load -->
     <service-loader config="[[config]]"> </service-loader>
 
@@ -56,18 +64,33 @@
                     "prefix": '',
                 };
             },
+            created: function() {
+              console.log('CREATED');
+            },
+
+            ready: function() {
+              console.log('READY');
+            },
 
             _configReceived: function(response) {
+              console.log('CONFIG RECEIVED')
                 // Structure.json object received
-                this.config = response;
+                // var keys = [];
+                // if (response) {
+                //   key = Object.keys(response);
+                //   this.config = response['config'];
+                //   console.log(this.config);
+                // }
+                // var al = this.shadowRoot.querySelector('async-loader').config = (this.config);
+                this.config        = response;
+                this.asyncConfig   = response.config;
+                this.asyncModules  = response.modules;
+                this.asyncServices = response.services;
+
+
+
                 this._loadIndex();
-                this._createServices(response);
             },
-
-            _createServices: function(config) {
-                console.log(config);
-            },
-
             _loadIndex: function() {
                 // Load index every time a structure.json object is loaded
                 if (this.route.path == "/") {

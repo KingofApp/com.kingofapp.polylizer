@@ -22,15 +22,14 @@
             is: 'module-html',
 
             properties: {
-                scope: {
+                value: {
                     type: String,
                     observer: '_scopeReceived'
                 }
             },
 
-            _scopeReceived: function(content) {
-                content = JSON.parse(content);
-                Polymer.dom(this.$.html_content).innerHTML = content.value;
+            _scopeReceived: function(value) {                
+                Polymer.dom(this.$.html_content).innerHTML = value;
             }
 
         });

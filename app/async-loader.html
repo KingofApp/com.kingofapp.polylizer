@@ -1,0 +1,167 @@
+<template>
+</template>
+<script>
+!function(document){"use strict";
+
+
+var t              = "async_",
+    location       = window.location.origin,
+    e              = document.getElementsByTagName("head")[0],
+    container      = (document._currentScript||document.currentScript).ownerDocument,
+    asyncPrototype =Object.create(HTMLElement.prototype);
+
+
+  function isView(modules, view){
+    var iv = false;
+    Object.keys(modules).forEach(function(module) {
+      var deep = module.split('/');
+      for(var i in deep){
+        if(('/' + deep[i]) === view)  return iv = true;
+      }
+    });
+    return iv;
+  }
+
+  function getModulesInView(modules, view) {
+    var viewModules = [];
+    if(modules[view]) {
+      viewModules.push(modules[view]);
+    } else if(isView(modules,view)){
+      Object.keys(modules).forEach(function(module) {
+         if((module.indexOf(view) > -1) && modules[module]) viewModules.push(modules[module]);
+       });
+    } else viewModules.push(modules['/404']);
+
+    return viewModules;
+  }
+
+
+  asyncPrototype.configObject= {},
+  asyncPrototype.modulesObject= {},
+  asyncPrototype.servicesObject= {},
+  asyncPrototype.path= '',
+
+
+  asyncPrototype.createdCallback=function(){
+    var t=container.querySelector("template"),
+        e=t.content.cloneNode(!0);
+
+    var shadowRoot=this.createShadowRoot();
+    shadowRoot.appendChild(e);
+    console.log('created');
+  },
+  asyncPrototype.attributeChangedCallback = function(attr, oldVal, newVal) {
+
+    if(newVal && attr === 'path') {
+      this.setPath(JSON.parse(newVal));
+      if((newVal !== oldVal)) {
+        this.clearView();
+        this.loadFiles();
+      }
+    }
+    if(newVal && attr === 'config') {
+      this.setConfig(JSON.parse(newVal));
+      this.setAttribute('config', '');
+    }
+    if(newVal && attr === 'modules') {
+      this.setModules(JSON.parse(newVal));
+      this.setAttribute('modules', '');
+      this.loadFiles();
+
+    }
+    if(newVal && attr === 'services') {
+      this.setServices(JSON.parse(newVal));
+      this.setAttribute('services', '');
+    }
+
+  },
+  asyncPrototype.setConfig=function(config) {
+    this.configObject = config;
+  },
+  asyncPrototype.getConfig=function() {
+    return this.configObject;
+  },
+  asyncPrototype.setModules=function(modules) {
+    this.modulesObject = modules;
+  },
+  asyncPrototype.getModules=function() {
+    return this.modulesObject;
+  },
+  asyncPrototype.setServices=function(services) {
+    this.servicesObject = services;
+  },
+  asyncPrototype.getServices=function() {
+    return this.servicesObject;
+  },
+  asyncPrototype.setPath=function(path) {
+    this.path = path;
+  },
+  asyncPrototype.getPath=function() {
+    return this.path;
+  },
+  asyncPrototype.getActualPath=function(){
+    var path = this.getPath().path;
+    return (path) ? path :  null;
+  },
+  asyncPrototype.getView = function(path) {
+    var separator = path.split('/');
+    return (separator[separator.length - 1]) ? separator[separator.length - 1] : separator[separator.length - 2];
+
+  },
+  asyncPrototype.clearView=function(){
+    while (this.shadowRoot.firstChild) {
+      this.shadowRoot.removeChild(this.shadowRoot.firstChild);
+    }
+  },
+  asyncPrototype.loadFiles=function(){
+    var modules = this.getModules(),
+        path = this.getActualPath(),
+        config = this.getConfig(),
+        view = '';
+
+    view = (path && path.length > 1) ? '/'+this.getView(path) :  view = config.index;
+
+    if(view) {
+      var viewModules = getModulesInView(modules,view);
+      for(var i in viewModules) this.loadModule(viewModules[i]);
+    }
+  },
+  asyncPrototype.loadModule=function(module){
+    if(module) {
+      if(!this.fileIsCached(module.view)) this.importElement(location + '/app/' + module.view)
+      this.injectContent(module);
+    }
+  },
+  asyncPrototype.importElement = function(view) {
+    var element = document.createElement('link');
+    element.rel = 'import',
+    element.href = view;
+    e.appendChild(element);
+  },
+  asyncPrototype.injectContent = function(s) {
+    var i = s.view.lastIndexOf('/') + 1;
+    var identifier = s.view.substring(i,s.view.indexOf("."));
+    var shadowRoot;
+    var o=document.createElement(identifier);
+        o.async=!1,
+        o.id=identifier;
+    Object.keys(s.scope).forEach(function(param) {
+      o[param] = s.scope[param];
+    });
+
+    (!this.shadowRoot)
+    ? shadowRoot=this.createShadowRoot()
+    : shadowRoot=this.shadowRoot;
+
+    shadowRoot.appendChild(o);
+  },
+  asyncPrototype.fileIsCached=function(href){
+    return e.querySelector("link[href='"+location + '/app/' + href+"']");
+  },
+  asyncPrototype.attachedCallback=function(){
+    console.log('[async-loader]');
+    this.loadFiles();
+  },
+  document.registerElement("async-loader",{prototype:asyncPrototype})
+}(document);
+</script>

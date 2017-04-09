@@ -29,14 +29,14 @@
       is: 'module-simplemenu',
 
       properties: {
-        scope: {
+        menuItems: {
           type: Object,
           observer: '_scopeReceived'
         }
       },
 
-      _scopeReceived: function(scope) {
-        this.menuItems = this.scope.menuItems;
+      _scopeReceived: function(menuItems) {        
+        this.menuItems = menuItems;
       }
 
     });

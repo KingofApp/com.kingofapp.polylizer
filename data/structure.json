@@ -70,6 +70,22 @@
         }
     },
     "modules": {
+        "/menu-abcd/profile/profile-vcard":{
+          "name": "Home",
+          "identifier": "profile-vcard",
+          "type": "P",
+          "icon": "profile",
+          "view": "modules/profile-vcard/profile-vcard.html",
+          "scope": {
+            "name": "Oscar Cortez",
+            "image": "https://avatars1.githubusercontent.com/u/2553459?v=3&s=400",
+            "profession": "Full Stack Ninja Developer",
+            "description": "Viajero Del Tiempo - Open Source Lover - Open Hardware Enthusiastic - Open Data Addict - Developer at kronoscode - Carpe Diem",
+            "twitter": "oscar_mcm",
+            "website": "oscarmcm.com",
+            "place":"Managua, Nicaragua"
+          }
+        },
         "/home-abcd": {
             "name": "Home",
             "identifier": "html",
@@ -160,8 +176,8 @@
                         "name": "Elem2"
                     },
                     {
-                        "path": "/menu-abcd/map-abc",
-                        "name": "Maps1"
+                        "path": "/menu-abcd/profile",
+                        "name": "Profile"
                     },
                     {
                         "path": "/menu-abcd/map-abcd",
@@ -174,7 +190,7 @@
                 ]
             }
         },
-        "/menu-abcd/another-abcd": {
+        "/menu-abcd/profile/html": {
             "name": "Home",
             "identifier": "html",
             "type": "P",

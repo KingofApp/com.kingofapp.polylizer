@@ -11,16 +11,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <!doctype html>
 <html lang="en">
   <head>
+    <title>Polylizer</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-    <title>Polylizer</title>
     <meta name="description" content="Polylizer by King Of App">
-
-    <link rel="icon" href="/images/favicon.ico">
-
     <!-- See https://goo.gl/qRE0vM -->
     <meta name="theme-color" content="#3f51b5">
+
+    <link rel="icon" href="/images/favicon.ico">
 
     <script>
       // Setup Polymer options
@@ -50,6 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         );
 
         if (!webComponentsSupported) {
+          console.log('loading polyfill');
           var script = document.createElement('script');
           script.async = true;
           script.src = '/bower_components/webcomponentsjs/webcomponents.min.js';
