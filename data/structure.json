@@ -132,36 +132,6 @@
                 "zoom": "15"
             }
         },
-        "/menu-abcd": {
-            "name": "Menu",
-            "identifier": "simplemenu",
-            "type": "P",
-            "icon": "room",
-            "view": "modules/simplemenu/module-simplemenu.html",
-            "scope": {
-                "menuItems": [{
-                        "path": "/home-abcd",
-                        "name": "Elem1"
-                    },
-                    {
-                        "path": "/menu-abcd/another-abcd",
-                        "name": "Elem2"
-                    },
-                    {
-                        "path": "/menu-abcd/map-abc",
-                        "name": "Maps1"
-                    },
-                    {
-                        "path": "/menu-abcd/map-abcd",
-                        "name": "Maps2"
-                    },
-                    {
-                        "path": "/menu-abcd/vimeo-abcd/another-abcz",
-                        "name": "Vimeo COnt"
-                    }
-                ]
-            }
-        },
         "/drawer-abcd": {
             "name": "Drawer",
             "identifier": "drawerMenu",
