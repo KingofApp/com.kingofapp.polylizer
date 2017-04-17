@@ -65,6 +65,10 @@
       "view": "modules/vimeocontainer/module-vimeocontainer.html",
       "scope": {
         "vimeoId": "22439234"
+      },
+      "styles": {
+        "body": "background-color: red; padding: 100px;",
+        ".card": "background-color: blue; padding: 100px;"
       }
     },
     "/menu-abcd/vimeo-abcd/another-abcz": {

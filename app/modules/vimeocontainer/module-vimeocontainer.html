@@ -26,9 +26,18 @@
         scope: {
           type: Object,
           observer: '_scopeReceived'
+        },
+        styles: {
+          type: Object,
+          observer: '_scopeReceived'
         }
       },
-
+      ready: function() {
+        for (var style in this.styles) {
+          if (style === 'body') this.shadowRoot.host.style.cssText = this.styles[style];
+          else Polymer.dom(this.root).querySelector(style).style.cssText = this.styles[style];
+        }
+      },
       _scopeReceived: function(scope) {
         this.vimeoUrl = 'http://player.vimeo.com/video/' + scope.vimeoId;
       }

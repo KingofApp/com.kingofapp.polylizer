@@ -65,6 +65,7 @@
       _createElement: function(module) {
         var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
         var scope = JSON.stringify(module.scope);
+        var styles = module.styles ? JSON.stringify(module.styles) : null;
 
         if (!this.shadowRoot.querySelector("module-" + module.identifier)) {
           // If module not found create a new element
@@ -74,6 +75,10 @@
         // Create attributes
         dynamicEl.setAttribute("class", "selected");
         dynamicEl.setAttribute("scope", scope);
+        
+        if (styles) {
+          dynamicEl.setAttribute("styles", styles);
+        }
 
         // This is used to reorder elements
         Polymer.dom(this.$.container).appendChild(dynamicEl);
