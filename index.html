@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="description" content="Polylizer by King Of App">
 
     <link rel="icon" href="/images/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
     <!-- See https://goo.gl/qRE0vM -->
     <meta name="theme-color" content="#3f51b5">
@@ -41,6 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               new CustomEvent('WebComponentsReady', {bubbles: true})
             );
           }
+
         };
 
         var webComponentsSupported = (
@@ -55,6 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           script.src = '/bower_components/webcomponentsjs/webcomponents.min.js';
           script.onload = onload;
           document.head.appendChild(script);
+
         } else {
           onload();
         }
@@ -69,6 +72,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </script>
 
     <link rel="import" href="/app/my-app.html">
+    <!-- Latest compiled and minified CSS -->
 
     <style>
       body {
@@ -83,5 +87,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body>
     <my-app></my-app>
     <!-- Built with love using Polymer Starter Kit -->
+
   </body>
 </html>

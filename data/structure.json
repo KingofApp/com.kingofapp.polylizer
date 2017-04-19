@@ -1,9 +1,9 @@
 {
     "config": {
-        "index": "/home-abcd",
+        "index": "/drawer-abcd",
         "theme": {
-            "identifier": "koapp-theme-android",
-            "path": "themes/koapp-theme-android/koapp-theme-android.html"
+            "identifier": "koapp-theme-bootstrap",
+            "path": "template/koapp-theme-bootstrap/koapp-theme-bootstrap.html"
         },
         "spinner": {
             "identifier": "koapp-spinner-android",
@@ -42,37 +42,6 @@
         ]
     },
     "modules": {
-        "/home-abcd": {
-            "name": "Drawer",
-            "identifier": "drawerMenu",
-            "type": "P",
-            "icon": "room",
-            "view": "modules/drawermenu/module-drawermenu.html",
-            "scope": {
-                "title": "Drawer menu",
-                "menuItems": [{
-                        "path": "/home-abcd",
-                        "name": "Elem1"
-                    },
-                    {
-                        "path": "/drawer-abcd/another-abcd",
-                        "name": "Elem2"
-                    },
-                    {
-                        "path": "/drawer-abcd/map-abc",
-                        "name": "Maps1"
-                    },
-                    {
-                        "path": "/drawer-abcd/map-abcd",
-                        "name": "Maps2"
-                    },
-                    {
-                        "path": "/drawer-abcd/vimeo-abcd/another-abcz",
-                        "name": "Vimeo COnt"
-                    }
-                ]
-            }
-        },
         "/drawer-abcd/vimeo-abcd": {
             "name": "Vimeo",
             "identifier": "vimeocontainer",
@@ -134,14 +103,15 @@
         },
         "/drawer-abcd": {
             "name": "Drawer",
-            "identifier": "drawerMenu",
+            "identifier": "bootstrapmenu",
             "type": "P",
             "icon": "room",
-            "view": "modules/drawermenu/module-drawermenu.html",
+            "view": "modules/bootstrapmenu/module-bootstrapmenu.html",
             "scope": {
                 "title": "Drawer menu",
-                "menuItems": [{
-                        "path": "/home-abcd",
+                "menuItems": [
+                    {
+                        "path": "/drawer-abcd",
                         "name": "Elem1"
                     },
                     {
@@ -158,7 +128,7 @@
                     },
                     {
                         "path": "/drawer-abcd/vimeo-abcd/another-abcz",
-                        "name": "Vimeo COnt"
+                        "name": "Vimeo container"
                     }
                 ]
             }

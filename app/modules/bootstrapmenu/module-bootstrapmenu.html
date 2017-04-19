@@ -1,0 +1,115 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../concept-loader.html">
+<link rel="import" href="../../template/koapp-theme-bootstrap/koapp-theme-bootstrap.html">
+
+<dom-module id="module-bootstrapmenu">
+  <template>
+    <link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+    <style>
+      :host {
+        display: block;
+        min-height: 60px;
+      }
+
+      :host .navbar {
+        padding: 0 !important;
+        border-radius: 0!important;
+      }
+
+      :host .navbar-inverse {
+        border-color: transparent!important;
+      }
+
+
+    </style>
+
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
+
+      <koa-toolbar>
+        <!-- TODO: backbutton -->
+        <koa-icon-button on-tap="displayMenu" data-toggle="collapse" icon="menu"></koa-icon-button>
+        <span class='title text-center'>[[rootName]]</span>
+      </koa-toolbar>
+
+      <!-- <a class="navbar-brand" href="#"></a> -->
+    <!-- Brand and toggle get grouped for better mobile display -->
+
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class$="collapse navbar-collapse" id="menuCollapse">
+        <ul class="navbar-nav mr-auto">
+          <template is="dom-repeat" items="{{menuItems}}">
+            <li class="nav-item">
+              <a on-tap="displayMenu" class="nav-link" href$="{{item.path}}" id$="{{item.class}}">
+                <paper-item >
+                  <koa-icon icon$='[[_getIcon(item.path)]]'></koa-icon>{{item.name}}</paper-item>
+                </paper-item>
+              </a>
+            </li>
+          </template>
+        </ul>
+
+      </div><!-- /.navbar-collapse -->
+    </nav>
+
+    <!-- Loading contained modules -->
+    <concept-loader config="[[config]]" path=[[path]]> </concept-loader>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'module-bootstrapmenu',
+      properties: {
+        scope: {
+          type: Object
+        },
+        path: {
+          type: Object
+        },
+        modules: {
+          type: Object
+        },
+        rootName: {
+          type: String,
+          value: ''
+        },
+        collapse: {
+          type: Boolean,
+          value: false
+        },
+        icon: {
+          type: String,
+          value: ''
+        }
+
+      },
+
+      observers: [
+        '_dataReceived(modules, path, scope)'
+      ],
+
+      _getIcon: function(path){
+        return this.modules[path].icon;
+      },
+
+      _dataReceived: function(modules, path, scope) {
+        this.rootName  = modules[path.path].name;
+        this.icon      = modules[path.path].icon;
+        this.menuItems = scope.menuItems;        
+      },
+
+      ready: function() {
+        this.toggleClass('collapse', this.collapse, this.$.menuCollapse);
+
+      },
+
+      displayMenu: function() {
+        this.collapse = !this.collapse;
+        this.toggleClass('collapse', this.collapse, this.$.menuCollapse);
+      }
+    });
+  </script>
+
+</dom-module>
