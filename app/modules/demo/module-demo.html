@@ -1,15 +1,144 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+
 <dom-module id="module-demo">
   <template>
+    <link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="import" href="../../template/koapp-theme-bootstrap/koapp-theme-bootstrap.html">
+
     <style>
       :host {
         display: block;
       }
     </style>
 
+    <div>
+      <section class='koapp-element'>
+        <h3 id="koabadge">koa-badge</h3>
+        <div class='element not-clickable'>
+          <koa-icon-button id='number' icon='add-box' alt='inbox'></koa-icon-button>
+          <koa-badge color="warning" pill>4</koa-badge>
+        </div>
+        <koa-icon-button id='icon' icon='account-box' alt='person'></koa-icon-button>
+        <koa-badge color="info">happy</koa-badge>
+
+      </section>
+
+      <section class='koapp-element'>
+        <h3 id="koabutton">koa-button</h3>
+        <h5>Button color</h5>
+        <div class="row">
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3">
+            <div class='element not-clickable'>
+              <koa-button color="btn-primary" translate>btn-primary</koa-button>
+            </div>
+            <div class='element not-clickable'>
+              <koa-button color="btn-success" translate>btn-success</koa-button>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3">
+            <div class='element not-clickable'>
+              <koa-button color="btn-info" translate>btn-info</koa-button>
+            </div>
+            <div class='element not-clickable'>
+              <koa-button color="btn-warning" translate>btn-warning</koa-button>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3">
+            <div class='element not-clickable'>
+              <koa-button color="btn-danger" translate>btn-danger</koa-button>
+            </div>
+            <div class='element not-clickable'>
+              <koa-button color="btn-link" translate>btn-link</koa-button>
+            </div>
+          </div>
+        </div>
+        <h5>Size</h5>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+              <koa-button color="btn-primary" size="btn-lg" translate>Large</koa-button>
+              <koa-button color="btn-primary" size="btn-md" translate>Medium</koa-button>
+              <koa-button color="btn-primary" size="btn-sm" translate>Small</koa-button>
+              <koa-button color="btn-primary" size="btn-xs" translate>XSmall</koa-button>
+          </div>
+        </div>
+        <h5>Active/Disabled</h5>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+              <koa-button color="btn-primary" active translate>Active</koa-button>
+              <koa-button color="btn-primary" disabled translate>Disabled</koa-button>
+          </div>
+        </div>
+        <h5>Block</h5>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+              <koa-button color="btn-block" translate>Active</koa-button>
+          </div>
+        </div>
+
+        </div>
+
+      </section>
+       <section class='koapp-element'>
+         <h3 id="koacard">koa-card</h3>
+          <div class="row not-clickable">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <h3>Standard</h3>
+              <koa-card title='Standar' img-position="top" subtitle="Some subtext" text="Lorem ipsum dolor sit amet, nec ad conceptam interpretaris, mea ne solet repudiandae." image='http://placehold.it/325x190'>
+                <div class='card-link'>
+                  <koa-button color="btn-link">Cancel</koa-button>
+                  <koa-button color="btn-link" active>Accept</koa-button>
+                </div>
+              </koa-card>
+
+              <koa-card title='Photo + Title + Subtitle + Text' text="Lorem ipsum dolor sit amet, nec ad conceptam interpretaris, mea ne solet repudiandae." subtitle="Some subtext"  image='http://placehold.it/190x325'>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Cras justo odio</li>
+                  <li class="list-group-item">Dapibus ac facilisis in</li>
+                  <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+              </koa-card>
+
+              <koa-card color="primary" title='Photo + Title + Text' header="Featured" text="Lorem ipsum dolor sit amet, nec ad conceptam interpretaris, mea ne solet repudiandae." image='http://placehold.it/400x100'>
+              </koa-card>
+
+              <koa-card title='Photo + Title' inverse image='http://placehold.it/325x190'>
+              </koa-card>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <h3>Horizontal</h3>
+              <koa-card horizontal='true' heading='Standard' subtext="Some subtext" image='http://placehold.it/325x190'>
+                <div class='card-content'>
+                  Lorem ipsum dolor sit amet, nec ad conceptam interpretaris, mea ne solet repudiandae.
+                </div>
+                <div class='card-actions'>
+                  <koa-button link translate>card.no</koa-button>
+                  <koa-button link translate>card.yes</koa-button>
+                </div>
+              </koa-card>
+              <koa-card horizontal='true' heading='Photo + Title + Subtitle + Text' subtext="Some subtext" image='http://placehold.it/400x100'>
+                <div class='card-content'>
+                  Lorem ipsum dolor sit amet, nec ad conceptam interpretaris, mea ne solet repudiandae.
+                </div>
+              </koa-card>
+              <koa-card horizontal='true' heading='Photo + Title + Text' image='http://placehold.it/190x325'>
+                <div class='card-content'>
+                  Lorem ipsum dolor sit amet, nec ad conceptam interpretaris, mea ne solet repudiandae.
+                </div>
+              </koa-card>
+              <koa-card horizontal='true' heading='Photo + Title' image='http://placehold.it/350x350'>
+              </koa-card>
+            </div>
+          </div>
+        </section>
+    </div>
   </template>
   <script>
     Polymer({
-      is: 'module-demo'
+      is: 'module-demo',
+
     });
   </script>
 </dom-module>

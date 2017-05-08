@@ -111,8 +111,8 @@
                 "title": "Drawer menu",
                 "menuItems": [
                     {
-                        "path": "/drawer-abcd",
-                        "name": "Elem1"
+                        "path": "/drawer-abcd/demo",
+                        "name": "Demo"
                     },
                     {
                         "path": "/drawer-abcd/another-abcd",
@@ -143,6 +143,14 @@
                 "value": "<p style='color:#39a9d3'>Test </p><p style='color:#d36339'>Html module</p>",
                 "display": ""
             }
+        },
+        "/drawer-abcd/demo": {
+            "name": "Demo",
+            "identifier": "demo",
+            "type": "P",
+            "icon": "home",
+            "view": "modules/demo/module-demo.html",
+            "scope": {}
         },
         "/404": {
             "name": "Not Found",
