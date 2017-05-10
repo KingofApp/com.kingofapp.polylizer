@@ -1,10 +1,10 @@
-<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 
 
 <dom-module id="module-demo">
   <template>
-    <link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="import" href="../../template/koapp-theme-bootstrap/koapp-theme-bootstrap.html">
+    <!-- <link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.css"> -->
 
     <style>
       :host {
@@ -21,7 +21,6 @@
         </div>
         <koa-icon-button id='icon' icon='account-box' alt='person'></koa-icon-button>
         <koa-badge color="info">happy</koa-badge>
-
       </section>
 
       <section class='koapp-element'>
@@ -136,9 +135,12 @@
     </div>
   </template>
   <script>
-    Polymer({
-      is: 'module-demo',
+    class ModuleDemo extends Polymer.Element {
+      static get is() { return 'module-demo'; }
 
-    });
+    }
+
+    window.customElements.define(ModuleDemo.is, ModuleDemo);
+
   </script>
 </dom-module>

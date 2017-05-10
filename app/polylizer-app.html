@@ -1,0 +1,151 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+<link rel="import" href="./concept-loader.html">
+<link rel="import" href="./template/koapp-theme-bootstrap/koapp-theme-bootstrap.html">
+
+
+<!--<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">-->
+<!--<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">-->
+
+<dom-module id="polylizer-app">
+  <template>
+    <link rel="import" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <iron-ajax auto url="/data/structure.json" handle-as="json" last-response="{{jsondata}}"></iron-ajax>
+
+    <!-- Router to detect page changes -->
+    <app-location route="{{route}}"></app-location>
+    <app-route
+      route="{{route}}"
+      pattern="/:page"
+      data="{{routeData}}"
+      tail="{{subroute}}"></app-route>
+
+
+    <concept-loader config="[[config]]" path=[[path]]> </concept-loader>
+
+
+  </template>
+
+  <script>
+    /** @polymerElement */
+    class PolylizerApp extends Polymer.Element {
+      constructor() {
+        super();
+      }
+
+      static get is() { return 'polylizer-app'; }
+      static get properties() {
+        return {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          jsondata: {
+            type: Object,
+            observer: '_configReceived',
+            reflectToAttribute: false
+          }
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page)'
+        ]
+      }
+
+      // _routeChanged(changeRecord) {
+      //   console.log(changeRecord);
+      //
+      //   // if (changeRecord.path === 'path') {
+      //   //   console.log('Path changed!');
+      //   // }
+      //   this.path = {
+      //     "path": this.route.path,
+      //     "prefix": '',
+      //   };
+      // }
+
+      _routePageChanged(page) {
+
+          // Polymer 2.0 will call with `undefined` on initialization.
+          // Ignore until we are properly called with a string.
+          if (page === undefined) {
+            return;
+          }
+
+          this.path = {
+            "path": this.route.path,
+            "prefix": '',
+          };
+
+          // this.page = page || this.config.index;
+
+
+          // If no page was found in the route data, page will be an empty string.
+          // Deault to 'view1' in that case.
+          // this.page = page || 'gods';
+          // Close a non-persistent drawer when the page & route are changed.
+          // if (!this.$.drawer.persistent) {
+          //   this.$.drawer.close();
+          // }
+      }
+
+      _pageChanged(page) {
+        console.log('changed ', page);
+        // Load page import on demand. Show 404 page if fails
+        // const resolvedPageUrl = this.resolveUrl('hof-' + page + '.html');
+        // Polymer.importHref(
+        //     resolvedPageUrl,
+        //     null,
+        //     this._showPage404.bind(this),
+        //     true);
+      }
+
+
+
+      // _routePageChanged(page) {
+      //   console.log(page);
+      //   this.path = {
+      //     "path": this.route.path,
+      //     "prefix": '',
+      //   };
+      //
+      // }
+      _configReceived(response) {
+        this.config = response;
+        this._loadIndex();
+
+      }
+
+      _loadIndex() {
+        // Load index every time a structure.json object is loaded
+        if (this.route.path == "/") {
+          this._delayPageLoad(this.config.config.index, 0);
+        }
+      }
+
+      _delayPageLoad(page, timeout) {
+        // Page load function with timeout
+        console.log(page, timeout);
+        var _this = this;
+        setTimeout(function() {
+          _this.route.path = page;
+          _this._routePageChanged(page);
+        }, timeout);
+      }
+    }
+
+    window.customElements.define(PolylizerApp.is, PolylizerApp);
+  </script>
+</dom-module>

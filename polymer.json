@@ -1,14 +1,7 @@
 {
-  "entrypoint": "index.html",
-  "shell": "app/my-app.html",
-  "fragments": [
-  ],
-  "sourceGlobs": [
-   "src/**/*",
-   "images/**/*",
-   "bower.json"
-  ],
-  "includeDependencies": [
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
-  ]
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  }
 }

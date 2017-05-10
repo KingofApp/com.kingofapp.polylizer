@@ -1,9 +1,11 @@
-<link rel="import" href="../../../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../../bower_components/koa-behaviors/koa-toolbar-behavior.html">
 <link rel="import" href="../../styles/default-theme.html">
 
 <dom-module id="koa-toolbar">
+  <link rel="stylesheet" href="../../../../../bower_components/bootstrap/dist/css/bootstrap.css">
+
   <template>
     <style>
       :host {
@@ -15,8 +17,9 @@
         font-family: var(--toolbar-font-family, --title-font-family);
         height: var(--toolbar-height, 64px);
         position: relative;*/
+        display: block;
 
-        @apply(--toolbar);
+        /*@apply(--toolbar);*/
       }
 
       :host .toolbar-tools > ::content > .title {
@@ -186,12 +189,15 @@
   </template>
 
   <script>
-    Polymer({
-      is: 'koa-toolbar',
+    class KoaToolbar extends Polymer.Element {
+      static get is() { return 'koa-toolbar'; }
+      static get behavior() {
+        return [
+          Polymer.KoaToolbarBehavior
+        ]
+      }
+    }
 
-      behaviors: [
-        Polymer.KoaToolbarBehavior
-      ]
-    });
+    window.customElements.define(KoaToolbar.is, KoaToolbar);
   </script>
 </dom-module>

@@ -1,11 +1,11 @@
-<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../concept-loader.html">
 <link rel="import" href="../../template/koapp-theme-bootstrap/koapp-theme-bootstrap.html">
 
 <dom-module id="module-bootstrapmenu">
   <template>
-    <link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../bower_components/bootstrap/dist/css/bootstrap.css">
 
     <style>
       :host {
@@ -26,10 +26,10 @@
     </style>
 
     <nav class="navbar navbar-toggleable-md navbar-inverse bg-primary">
-
       <koa-toolbar>
         <!-- TODO: backbutton -->
-        <koa-icon-button on-tap="displayMenu" data-toggle="collapse" icon="menu"></koa-icon-button>
+        <!-- <koa-icon-button icon="menu" hidden$="[!showBack]" data-toggle="collapse" data-target="#navbarSupportedContent"></koa-icon-button> -->
+        <koa-icon-button on-click="displayMenu" data-toggle="collapse" icon="menu"></koa-icon-button>
         <span class='title text-center'>[[rootName]]</span>
       </koa-toolbar>
 
@@ -42,10 +42,10 @@
         <ul class="navbar-nav mr-auto">
           <template is="dom-repeat" items="{{menuItems}}">
             <li class="nav-item">
-              <a on-tap="displayMenu" class="nav-link" href$="{{item.path}}" id$="{{item.class}}">
-                <paper-item >
-                  <koa-icon icon$='[[_getIcon(item.path)]]'></koa-icon>{{item.name}}</paper-item>
-                </paper-item>
+              <a on-click="[[displayMenu]]" class="nav-link" href$="{{item.path}}" id$="{{item.class}}">
+                <koa-item>
+                  <koa-icon icon$='[[_getIcon(item.path)]]'></koa-icon>{{item.name}}
+                </koa-item>
               </a>
             </li>
           </template>
@@ -58,18 +58,25 @@
     <concept-loader config="[[config]]" path=[[path]]> </concept-loader>
 
   </template>
+
   <script>
-    Polymer({
-      is: 'module-bootstrapmenu',
-      properties: {
+  class ModuleBootstrapmenu extends Polymer.Element {
+
+    static get is() { return 'module-bootstrapmenu'; }
+
+    static get properties() {
+      return {
         scope: {
-          type: Object
+          type: Object,
+          reflectToAttribute: false
         },
         path: {
           type: Object
         },
         modules: {
-          type: Object
+          type: Object,
+          reflectToAttribute: false,
+          value: ''
         },
         rootName: {
           type: String,
@@ -83,33 +90,64 @@
           type: String,
           value: ''
         }
+      };
+    }
 
-      },
 
-      observers: [
+    static get observers() {
+      return [
         '_dataReceived(modules, path, scope)'
-      ],
+      ]
+    }
 
-      _getIcon: function(path){
-        return this.modules[path].icon;
-      },
+    _handleClick(e) {
+      console.log(e);
+    }
 
-      _dataReceived: function(modules, path, scope) {
-        this.rootName  = modules[path.path].name;
-        this.icon      = modules[path.path].icon;
-        this.menuItems = scope.menuItems;        
-      },
+    _getIcon(path){
+      return this.modules[path].icon;
+    }
 
-      ready: function() {
-        this.toggleClass('collapse', this.collapse, this.$.menuCollapse);
+    _dataReceived(modules, path, scope) {
+      this.rootName  = modules[path.path].name;
+      this.icon      = modules[path.path].icon;
+      this.menuItems = scope.menuItems;
+    }
 
-      },
+    constructor() {
+      super();
+      console.log('constructed');
+    }
 
-      displayMenu: function() {
-        this.collapse = !this.collapse;
-        this.toggleClass('collapse', this.collapse, this.$.menuCollapse);
-      }
-    });
+    ready() {
+      super.ready();
+
+      var menu = this.shadowRoot.querySelector('#menuCollapse');
+      this.shadowRoot.querySelector('koa-icon-button').addEventListener('click', function(e) {
+        console.log(e.target);
+      });
+      this.shadowRoot.querySelector('koa-toolbar').addEventListener('click', function(e) {
+        menu.classList.toggle('collapse');
+      });
+      // menu.classList.toggle('collapse');
+
+    }
+
+    displayMenu() {
+      console.log('display');
+      // this.collapse = !this.collapse;
+      var menu = this.shadowRoot.querySelector('#menuCollapse');
+      menu.classList.toggle('collapse');
+    }
+
+    // attributeChangedCallback(attr) {
+    //   console.log(attr);
+    // }
+
+  }
+
+  customElements.define(ModuleBootstrapmenu.is, ModuleBootstrapmenu);
+
   </script>
 
 </dom-module>

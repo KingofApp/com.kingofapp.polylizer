@@ -1,20 +1,18 @@
 {
   "name": "polylizer",
-  "authors": [
-    "King Of App"
-  ],
-  "private": true,
+  "main": "index.html",
   "dependencies": {
-    "app-layout": "PolymerElements/app-layout#^0.10.0",
-    "app-route": "PolymerElements/app-route#^0.9.0",
-    "polymer": "Polymer/polymer#^1.6.0",
-    "google-map": "GoogleWebComponents/google-map#^1.1.14",
-    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
-    "bootstrap": "v4.0.0-alpha.6",
-    "koa-behaviors": "^0.11.0",
-    "iron-icons": "PolymerElements/iron-icons#^1.2.0"
+    "polymer": "Polymer/polymer#^2.0.0-rc.3",
+    "iron-ajax": "^1.4.4",
+    "app-route": "PolymerElements/app-route#2.0-preview",
+    "bootstrap": "4.0.0-alpha.6",
+    "paper-item": "^1.2.2",
+    "iron-icon": "^1.0.13",
+    "iron-icons": "^1.2.1",
+    "koa-behaviors": "^0.11.0"
   },
   "devDependencies": {
-    "web-component-tester": "^4.0.0"
+    "web-component-tester": "^6.0.0-prerelease.5",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.7"
   }
 }

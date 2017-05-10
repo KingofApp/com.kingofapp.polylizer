@@ -1,4 +1,5 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./shared-styles.html">
 
 <dom-module id="concept-loader">
 
@@ -16,29 +17,41 @@
   </template>
 
   <script>
-    Polymer({
+    class ConceptLoader extends Polymer.Element {
 
-      is: 'concept-loader',
+      static get is() { return 'concept-loader'; }
 
-      properties: {
-        config: {
-          type: String
-        },
-        path: {
-          type: String,
-          reflectToAttribute: true
+      static get properties() {
+        return {
+          config: {
+            type: String
+          },
+          path: {
+            type: String,
+            reflectToAttribute: true
+          }
         }
-      },
+      }
 
-      observers: [
-        '_dataReceived(config,path)'
-      ],
+      ready() {
+        super.ready();
+        console.log('ready');
+      }
 
-      _dataReceived: function(config, path) {
+      static get observers() {
+        return [
+          '_dataReceived(config,path)'
+        ]
+      }
 
+      _dataReceived(config, path) {
 
+        //return is config is undefined
+        if(!config) {
+          return;
+        }
         // Prevent undefined / empty path
-        if(this.path.path && this.path.path != ''){
+        if(this.path && this.path.path != ''){
           //Remove selected classes "selected"
           var items = this.shadowRoot.querySelectorAll('.selected');
           for (var i = 0; i < items.length; i++) {
@@ -46,23 +59,23 @@
             items[i].classList.add("hidden");
           }
 
+
           // Path reduction to create container paths
           var routes = this.path.path.split("/");
           var temp = '';
           for (var i = 1; i < routes.length; i++) {
             temp += '/' + routes[i];
-            // Only for elements found in the structure service
-            if (this.config.modules[temp] && this.config.modules[temp].identifier) {
+            // Only for elements found in the structure service            console.log(this.config.modules[temp]);
+            if (this.config && this.config.modules[temp] && this.config.modules[temp].identifier) {
               console.log("[concept-loader] Creating element.. " + this.config.modules[temp].identifier);
               this._createElement(this.config.modules[temp]);
             }
           }
-
-
         }
-      },
+      }
 
-      _createElement: function(module) {
+      _createElement(module) {
+
         var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
         var scope = JSON.stringify(module.scope);
         var config = JSON.stringify(this.config.modules);
@@ -72,6 +85,7 @@
           // If module not found create a new element
           dynamicEl = document.createElement("module-" + module.identifier);
         }
+
 
         // Create attributes
         dynamicEl.setAttribute("class", "selected");
@@ -84,16 +98,103 @@
         // This is used to reorder elements
         Polymer.dom(this.$.container).appendChild(dynamicEl);
 
-        this._importElement(module);
-      },
+        this._importElement(this.resolveUrl(module.view));
 
-      _importElement: function(module) {
-        // Import dynamic htmls
-        var resolvedPageUrl = this.resolveUrl(module.view);
-        this.importHref(resolvedPageUrl, null, null, true);
+
       }
 
-    });
+      _importElement(view) {
+        // Import dynamic htmls
+        var header = document.getElementsByTagName("head")[0];
+        var element = document.createElement('link');
+        element.rel = 'import',
+        element.href = view;
+        header.appendChild(element);
+      }
+
+    }
+
+    // Polymer({
+    //
+    //   is: 'concept-loader',
+    //
+    //   properties: {
+    //     config: {
+    //       type: String
+    //     },
+    //     path: {
+    //       type: String,
+    //       reflectToAttribute: true
+    //     }
+    //   },
+    //
+    //   observers: [
+    //     '_dataReceived(config,path)'
+    //   ],
+
+      // _dataReceived: function(config, path) {
+      //
+      //   console.log('concept-loader',config, path);
+      //   // Prevent undefined / empty path
+      //   if(this.path.path && this.path.path != ''){
+      //     //Remove selected classes "selected"
+      //     var items = this.shadowRoot.querySelectorAll('.selected');
+      //     for (var i = 0; i < items.length; i++) {
+      //       items[i].classList.remove("selected");
+      //       items[i].classList.add("hidden");
+      //     }
+      //
+      //     // Path reduction to create container paths
+      //     var routes = this.path.path.split("/");
+      //     var temp = '';
+      //     for (var i = 1; i < routes.length; i++) {
+      //       temp += '/' + routes[i];
+      //       // Only for elements found in the structure service
+      //       if (this.config && this.config.modules[temp] && this.config.modules[temp].identifier) {
+      //         console.log("[concept-loader] Creating element.. " + this.config.modules[temp].identifier);
+      //         this._createElement(this.config.modules[temp]);
+      //       }
+      //     }
+      //
+      //
+      //   }
+      // },
+
+      // _createElement: function(module) {
+      //   var dynamicEl = this.shadowRoot.querySelector("module-" + module.identifier);
+      //   var scope = JSON.stringify(module.scope);
+      //   var config = JSON.stringify(this.config.modules);
+      //   var path = JSON.stringify(this.path);
+      //
+      //   if (!this.shadowRoot.querySelector("module-" + module.identifier)) {
+      //     // If module not found create a new element
+      //     dynamicEl = document.createElement("module-" + module.identifier);
+      //   }
+      //
+      //   // Create attributes
+      //   dynamicEl.setAttribute("class", "selected");
+      //   if ((module.identifier).indexOf('menu') > -1) {
+      //     dynamicEl.setAttribute("modules", config);
+      //     dynamicEl.setAttribute("path", path);
+      //   }
+      //   dynamicEl.setAttribute("scope", scope);
+      //
+      //   // This is used to reorder elements
+      //   Polymer.dom(this.$.container).appendChild(dynamicEl);
+      //
+      //   this._importElement(module);
+      // },
+      //
+      // _importElement: function(module) {
+      //   // Import dynamic htmls
+      //   var resolvedPageUrl = this.resolveUrl(module.view);
+      //   this.importHref(resolvedPageUrl, null, null, true);
+      // }
+
+    // });
+
+    customElements.define(ConceptLoader.is, ConceptLoader);
+
   </script>
 
 </dom-module>
